@@ -1,31 +1,26 @@
 @page "/demoHotel"
 @using HiddenVilla_Server.Model
-@using System.Globalization
 
 <h3>We will display hotel rooms and amentities here!</h3>
 <div class="border p-2 mt-2" style="background-color: azure">
     <h2 class="text-info">Room List [USING COMPONENT]</h2>
     <div class="row container">
+        <div class="col-12">
+            <h4 class="text-info">Hotel Room's</h4>
+        </div>
+        
         @foreach (var room in RoomsList)
         {
-            <div class="bg-light border p-2 col-5">
-                <h4 class="text-secondary">Room - @room.Id</h4>
-                @room.RoomName<br/>
-                @room.Price.ToString("C", new CultureInfo("en-US"))<br/>
-                <input type="checkbox" @bind-value="room.IsActive" checked="@(room.IsActive ? "checked" : null)"> &nbsp; Is Active<br/>
-                <span>This room is @(room.IsActive ? "Active" : "InActive")</span><br/>
-                
-                @if (room.IsActive)
-                {
-                    @foreach (var roomProp in room.RoomProps)
-                    {
-                        <p>@roomProp.Name - @roomProp.Value</p>
-                    }
-                }
-                
-                <input type="button" class="btn btn-danger" value="Delete" />
-                <input type="button" class="btn btn-success" value="Edit" />
-            </div>
+            <IndividualRoom Room="room"></IndividualRoom>
+        }
+        
+        <div class="col-12 mt-4">
+            <h4 class="text-info">Hotel Amenities [Assignment]</h4>
+        </div>
+        
+        @foreach (var amenity in AmenitiesList)
+        {
+            <IndividualAmentities Amenities="amenity"></IndividualAmentities>
         }
     </div>
 </div>
@@ -34,6 +29,7 @@
 @code {
     
     List<BlazorRoom> RoomsList = new();
+    List<BlazorAmentities> AmenitiesList = new();
 
     protected override void OnInitialized()
     {
@@ -63,6 +59,27 @@
                 new() { Id = 1, Name = "Sq Ft", Value = "150"},
                 new() { Id = 2, Name = "Occupancy", Value = "6"}
             }
+        });
+        
+        AmenitiesList.Add(new BlazorAmentities
+        {
+            Id = 111,
+            Name = "Gym",
+            Description = "24x7 gym room is available."
+        });
+        
+        AmenitiesList.Add(new BlazorAmentities
+        {
+            Id = 222,
+            Name = "Swimming Pool",
+            Description = "Pool room is open from 6am to 10pm."
+        });
+        
+        AmenitiesList.Add(new BlazorAmentities
+        {
+            Id = 333,
+            Name = "Free Breakfast",
+            Description = "Enjoy free breakfast at our hotel."
         });
     }
 
